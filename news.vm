@@ -1,0 +1,28 @@
+#foreach ($entry in $result)
+    <article class="env-news-item env-m-bottom--medium">
+    <div class="env-news-item__media">
+        <img
+            class="env-image"
+            src="$entry.imageUrl"
+            alt="$entry.imageAlt"
+        />
+    </div>
+    <header class="env-news-item__headline">
+        <div class="env-news-item__headline__title">
+            <h2 class="env-text">
+                <a href="#" class="env-link-secondary">$entry.title</a>
+            </h2>
+        </div>
+    </header>
+    <section class="env-news-item__preamble">
+        <a href="$entry.articleUrl">
+            <p class="env-text">
+                $entry.ingress
+            </p>
+            <p class="env-text">
+                $entry.content
+            </p>
+        </a>
+    </section>
+    </article>
+#end
