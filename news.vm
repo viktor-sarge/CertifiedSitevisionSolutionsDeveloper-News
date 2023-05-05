@@ -1,27 +1,36 @@
 #foreach ($entry in $result)
+
 <article class="env-news-item env-m-bottom--medium">
-    <div class="env-news-item__media">
-        <img
-            class="env-image"
-            src="$entry.imageUrl"
-            alt="$entry.imageAlt"
-        />
-    </div>
-    <header class="env-news-item__headline">
-        <div class="env-news-item__headline__title">
-            <h2 class="env-text">
-                $entry.title
-            </h2>
+    #if($entry.imageUrl)
+        <div class="env-news-item__media">
+            <img
+                class="env-image"
+                src="$entry.imageUrl"
+                alt="$entry.imageAlt"
+            /> 
         </div>
-    </header>
+    #end
+    #if($entry.title.length() > 0)
+        <header class="env-news-item__headline">
+            <div class="env-news-item__headline__title">
+                <h2 class="env-text">
+                $entry.title
+                </h2>
+            </div>
+        </header>
+    #end
     <section class="env-news-item__preamble">
         <a href="$entry.articleUrl" class="env-link-secondary">
-            <p class="env-text">
+            #if($entry.ingress.length() > 0)
+                <p class="env-text">
                 $entry.ingress
-            </p>
-            <p class="env-text">
+                </p>
+            #end
+            #if($entry.content.length() > 0)
+                <p class="env-text">
                 $entry.content
-            </p>
+                </p>
+            #end
         </a>
     </section>
 </article>

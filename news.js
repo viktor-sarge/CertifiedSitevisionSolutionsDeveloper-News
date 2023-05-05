@@ -15,26 +15,33 @@ var properties = require('Properties');
 var pageId = properties.get(scriptVariables.source);
 var archive = jcrSession.getNodeByIdentifier(pageId);
 var articles = archive.getNodes();
-
 var result = [];
 
 var i = 0;
-while (articles.hasNext() && i < scriptVariables.limit) {
+while (i < scriptVariables.limit && articles.hasNext()) {
+    var imageUrl = null;
+    var title = '';
+    var imageAlt = '';
+    var ingress = '';
+    var content = '';
+    var articleUrl = '';
+
     var childNode = articles.nextNode(); // Iterate
-    var title = childNode.getProperty("SV.Title").getString();
+    if(childNode) {
+        title = properties.get(childNode, 'SV.Title'); 
+        ingress = properties.get(childNode, 'SV.Description');
+        ingress = strTrunc(ingress, maxLenIngress);
+        content = properties.get(childNode, 'SV.Content');
+        content = strTrunc(content, maxLenArticle);
+        articleUrl = properties.get(childNode, 'URL');
 
-    var ingress = childNode.getProperty("SV.Description").getString();
-    ingress = strTrunc(ingress, maxLenIngress);
-
-    var content = childNode.getProperty("SV.Content").getString();
-    content = strTrunc(content, maxLenArticle);
-
-    var imageId = childNode.getProperty("SV.Image").getString();
-    var imageNode = jcrSession.getNodeByIdentifier(imageId);
-    var imageUrl = imageNode.getProperty("URL").getString();
-    var imageAlt = imageNode.getProperty("alt").getString();
- 
-    var articleUrl = childNode.getProperty("URL").getString();
+        var imageId = properties.get(childNode, 'SV.Image');
+        if(imageId) {
+            imageNode = jcrSession.getNodeByIdentifier(imageId);
+            imageUrl = properties.get(imageNode, 'URL');
+            imageAlt = properties.get(imageNode, 'alt');
+        }
+    }
     result.push({
         title: title,
         ingress: ingress,
